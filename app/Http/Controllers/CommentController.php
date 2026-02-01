@@ -3,33 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Review; // Import important !
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
     /**
-     * Enregistre un nouveau commentaire (Réponse de l'admin)
+     * Enregistre une réponse officielle (Réservé à l'entreprise concernée)
      */
     public function store(Request $request, $reviewId)
     {
-        // 1. Vérification de sécurité : SEUL l'admin peut commenter
-        if ($request->user()->role !== 'admin') {
-            return response()->json(['message' => 'Seul l\'administrateur peut répondre aux avis'], 403);
+        $user = $request->user();
+        $review = Review::findOrFail($reviewId);
+
+        // 1. SÉCURITÉ : L'Admin n'a pas à répondre aux clients (rôle de modérateur uniquement)
+        if ($user->role === 'admin') {
+            return response()->json(['message' => 'L\'administrateur ne peut pas poster de réponses officielles.'], 403);
         }
 
-        // 2. Validation du contenu
+        // 2. SÉCURITÉ : L'entreprise peut répondre SEULEMENT si l'avis la concerne
+        if ($user->role === 'entreprise') {
+            if ($review->subject !== $user->company_name) {
+                return response()->json(['message' => 'Vous ne pouvez répondre qu\'aux avis concernant votre entreprise.'], 403);
+            }
+        } else {
+            // Un utilisateur classique ('user') ne peut pas répondre aux avis des autres
+            return response()->json(['message' => 'Action non autorisée.'], 403);
+        }
+
+        // 3. Validation du contenu
         $request->validate([
             'content' => 'required|string|max:1000'
         ]);
 
-        // 3. Création en base de données
+        // 4. Création en base de données
         $comment = Comment::create([
             'review_id' => $reviewId,
-            'user_id'   => $request->user()->id,
+            'user_id'   => $user->id,
             'content'   => $request->content,
         ]);
 
-        // 4. On renvoie le commentaire avec les infos de l'utilisateur (le nom de l'admin)
         return response()->json($comment->load('user'), 201);
     }
 }

@@ -18,12 +18,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+    'company_name',
+];
     // Relation : Un utilisateur peut avoir plusieurs avis [cite: 53]
     public function reviews()
     {

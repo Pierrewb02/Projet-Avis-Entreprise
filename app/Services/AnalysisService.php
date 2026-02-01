@@ -8,41 +8,56 @@ class AnalysisService
     {
         $text = mb_strtolower($text);
         
-        // Liste de mots-clés (Option 1 du projet) [cite: 28, 30]
-        $positives = ['bon', 'super', 'excellent', 'rapide', 'parfait', 'top', 'satisfait'];
-        $negatives = ['mauvais', 'nul', 'lent', 'horrible', 'déçu', 'problème', 'cher'];
+        // Listes enrichies pour être plus précis
+        $positives = ['bon', 'super', 'excellent', 'rapide', 'parfait', 'top', 'satisfait', 'génial', 'merci', 'recommande', 'incroyable'];
+        $negatives = ['mauvais', 'nul', 'lent', 'horrible', 'déçu', 'problème', 'cher', 'dommage', 'arnaque', 'attente', 'catastrophique'];
 
-        $sentiment = 'neutral';
-        $score = 50; // Score par défaut (0-100) [cite: 34]
+        $posCount = 0;
+        $negCount = 0;
 
         foreach ($positives as $word) {
-            if (str_contains($text, $word)) {
-                $sentiment = 'positive';
-                $score = 85;
-            }
+            if (str_contains($text, $word)) $posCount++;
         }
 
         foreach ($negatives as $word) {
-            if (str_contains($text, $word)) {
-                $sentiment = 'negative';
-                $score = 20;
-            }
+            if (str_contains($text, $word)) $negCount++;
         }
+
+        // Calcul du score (base 50)
+        $scoreValue = 50 + ($posCount * 15) - ($negCount * 15);
+        $scoreValue = max(0, min(100, $scoreValue));
+
+        // Sentiment basé sur le score
+        $sentiment = 'neutral';
+        if ($scoreValue > 55) $sentiment = 'positive';
+        if ($scoreValue < 45) $sentiment = 'negative';
 
         return [
             'sentiment' => $sentiment,
-            'score' => $score,
-            'topics' => $this->detectTopics($text) // Option 2 [cite: 32]
+            'score'     => $scoreValue / 100, // <--- ICI : On transforme 85 en 0.85 pour ta colonne FLOAT
+            'topics'    => $this->detectTopics($text)
         ];
     }
 
     private function detectTopics($text): array
     {
         $topics = [];
-        if (str_contains($text, 'livraison')) $topics[] = 'Livraison';
-        if (str_contains($text, 'prix') || str_contains($text, 'cher')) $topics[] = 'Prix';
-        if (str_contains($text, 'qualité')) $topics[] = 'Qualité';
+        $keywords = [
+            'Livraison' => ['livraison', 'reçu', 'colis', 'envoi', 'reception'],
+            'Prix'      => ['prix', 'cher', 'coûte', 'argent', 'abonnement', 'tarif'],
+            'Qualité'   => ['qualité', 'service', 'vidéo', 'film', 'série', 'produit'],
+            'Support'   => ['aide', 'support', 'contact', 'réponse', 'sav']
+        ];
+
+        foreach ($keywords as $topic => $words) {
+            foreach ($words as $word) {
+                if (str_contains($text, $word)) {
+                    $topics[] = $topic;
+                    break; 
+                }
+            }
+        }
         
-        return $topics;
+        return array_unique($topics);
     }
 }

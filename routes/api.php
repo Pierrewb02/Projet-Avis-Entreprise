@@ -23,12 +23,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 
+    // Gestion des modifications 
+    Route::put('/reviews/{id}', [ReviewController::class, 'update']);
+
     // Gestion des réponses (Commentaires)
-    // ON LA MET ICI pour que $request->user() fonctionne dans le contrôleur
     Route::post('/reviews/{reviewId}/comments', [CommentController::class, 'store']);
 
     // Statistiques pour le Dashboard
-    Route::get('/reviews/stats', [ReviewController::class, 'stats']); 
+    Route::get('/stats', [ReviewController::class, 'getStats']);
 
     // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout']);
