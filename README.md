@@ -1,59 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  AvisPro – Plateforme d’Analyse Automatisée des Avis Clients
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+AvisPro est une solution SaaS permettant aux entreprises d’analyser automatiquement la satisfaction de leurs clients grâce à un moteur d’analyse sémantique interne et une architecture Full‑Stack moderne.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  Architecture du Projet
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🔹 Backend – API REST (Laravel 11)
+- Framework Laravel 11
+- Authentification sécurisée via Sanctum
+- ORM Eloquent pour la gestion des relations
+- Migrations pour un travail collaboratif propre
+- Analyse automatique des avis via un service interne (`AnalysisService`)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔹 Frontend – SPA (Vue.js 3)
+- Application Single Page Application
+- Interface réactive et fluide
+- Dashboard professionnel avec indicateurs visuels
+- Composants dynamiques pour afficher les résultats de l’analyse
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+##  Moteur d’Analyse Sémantique
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Un moteur interne analyse chaque commentaire pour produire un score de sentiment :
 
-## Laravel Sponsors
+- Analyse basée sur un dictionnaire sémantique pondéré  
+- Score compris entre 0 et 1  
+- Conversion en badges visuels : **Positif / Neutre / Négatif**  
+- Recalcul automatique lors de la modification d’un avis (PUT)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+##  Gestion des Rôles & Sécurité (RBAC)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Isolation stricte des données par entreprise  
+- Middlewares pour protéger les routes sensibles  
+- Accès administrateur réservé  
+- Accès entreprise limité à ses propres avis et statistiques  
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##  UX / UI
 
-## Code of Conduct
+- Interface moderne inspirée de Material Design  
+- Menu profil dynamique (Popover)  
+- Visualisation claire des KPI  
+- Dashboard réactif basé sur les données de l’IA  
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+##  Workflow Git & Collaboration
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Branches séparées pour le backend et le frontend  
+- Historique clair des contributions  
+- Utilisation de `.env.example` pour partager la structure sans exposer les secrets  
+- Commits réguliers et structurés  
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##  Perspectives d’Évolution
+
+- Notifications en temps réel (email) en cas d’avis critique  
+- Génération automatique de rapports PDF mensuels  
+- Système d’avis vérifiés pour garantir l’authenticité  
+
+---
+
+##  Rapport du Projet
+
+Le rapport complet est disponible ici :  
+ **[docs/Rapport-avispro.pdf](docs/Rapport-avispro.pdf)**
+
+---
+
+##  Auteur
+
+Projet réalisé par **JP et OSCARINE**, dans le cadre du développement d’une plateforme d’analyse d’avis clients.
+
