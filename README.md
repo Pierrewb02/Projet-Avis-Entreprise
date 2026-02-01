@@ -70,7 +70,7 @@ Un moteur interne analyse chaque commentaire pour produire un score de sentiment
 ##  Rapport du Projet
 
 Le rapport complet est disponible ici :  
- **[docs/Rapport-avispro.pdf](docs/Rapport-avispro.pdf)**
+ **[Docs/Rapport-avispro.pdf](Docs/Rapport-avispro.pdf)**
 
 ---
 
